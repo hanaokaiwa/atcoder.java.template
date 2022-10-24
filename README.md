@@ -26,4 +26,5 @@ EXTERNAL_FOLDER=外部フォルダーのパス
 
 1. 該当のテストクラスをJUnitで実行する
 Eclipseでは以下の画像のようになれば、設定が正しいことが確認できる。
+
 ![ABC051のA問題のJUnitの実行結果](./junit.png)
