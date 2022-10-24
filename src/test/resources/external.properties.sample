@@ -1,0 +1,4 @@
+# 外部フォルダーを使用するかどうか
+USE_EXTERNAL=true
+# 外部フォルダーを指定する
+EXTERNAL_FOLDER=/folder/of/atcoder/data
