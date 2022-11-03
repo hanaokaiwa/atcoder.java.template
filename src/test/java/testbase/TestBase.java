@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -488,7 +489,7 @@ public abstract class TestBase {
 		assertNotNull(testcase);
 		if ((null != path) && (!path.isBlank())) {
 			// パスの分割符号をシステム標準のものに置き換える
-			path = path.replaceAll("[\\\\/]", File.separator);
+			path = path.replaceAll("[\\\\/]", Matcher.quoteReplacement(File.separator));
 			File baseFolder = new File(EXTERNAL_FOLDER);
 			if (USE_EXTERNAL && baseFolder.exists() && baseFolder.isDirectory()) {
 				Collection<DynamicTest> collection = checkExternalFolder(path, checker, testcase);
