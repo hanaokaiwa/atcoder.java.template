@@ -6,8 +6,9 @@
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>11</java.version>
-    <junit.jupiter.version>5.9.1</junit.jupiter.version>
+    <java.version>17</java.version>
+    <junit.jupiter.version>5.11.4</junit.jupiter.version>
+    <spotbugs.exclude.filter.file>spotbugs-exclude.xml</spotbugs.exclude.filter.file>
   </properties>
   
   <dependencies>
@@ -26,7 +27,7 @@
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-launcher</artifactId>
-      <version>1.9.1</version>
+      <version>1.11.4</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -35,18 +36,43 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.10.1</version>
+        <version>3.13.0</version>
         <configuration>
           <release>${java.version}</release>
         </configuration>
       </plugin>
       <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.2</version>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.2</version>
+        <configuration>
+          <argLine>-Xss512M</argLine>
+        </configuration>
       </plugin>
       <plugin>
-          <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.22.2</version>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.5.2</version>
+      </plugin>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.6.6</version>
+        <configuration>
+          <excludeFilterFile>${spotbugs.exclude.filter.file}</excludeFilterFile>
+          <plugins>
+            <plugin>
+              <groupId>com.h3xstream.findsecbugs</groupId>
+              <artifactId>findsecbugs-plugin</artifactId>
+              <version>1.13.0</version>
+            </plugin>
+          </plugins>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs</artifactId>
+            <version>4.8.6</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
