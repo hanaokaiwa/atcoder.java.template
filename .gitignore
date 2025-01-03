@@ -3,3 +3,4 @@
 /.classpath
 /.project
 src/test/resources/external.properties
+src/test/resources/timeLimit.properties
