@@ -12,11 +12,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
@@ -107,9 +109,11 @@ public abstract class TestBase {
 			}
 			InputStream timeLimitIs = TestBase.class.getClassLoader().getResourceAsStream(TIME_LIMIT_PROPERTIES_FILE);
 			if (null != timeLimitIs) {
-				TIME_LIMIT_PROPERTIES.load(timeLimitIs);
-				CHECK_TIME_LIMIT = Boolean.parseBoolean(
-						TIME_LIMIT_PROPERTIES.getProperty(CHECK_TIME_LIMIT_KEY, Boolean.FALSE.toString()));
+				try (InputStreamReader isr = new InputStreamReader(timeLimitIs, StandardCharsets.UTF_8)) {
+					TIME_LIMIT_PROPERTIES.load(isr);
+					CHECK_TIME_LIMIT = Boolean.parseBoolean(
+							TIME_LIMIT_PROPERTIES.getProperty(CHECK_TIME_LIMIT_KEY, Boolean.FALSE.toString()));
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -333,8 +337,7 @@ public abstract class TestBase {
 	 * @param expected 予想される実行結果
 	 */
 	protected void check(InputStream inputIs, String expected) {
-		try (ByteArrayOutputStream inputBaos = new ByteArrayOutputStream();
-				ByteArrayOutputStream expectedBaos = new ByteArrayOutputStream()) {
+		try (ByteArrayOutputStream inputBaos = new ByteArrayOutputStream()) {
 			byte[] buffer = new byte[8192];
 			int length = 0;
 			while (-1 != (length = inputIs.read(buffer))) {
